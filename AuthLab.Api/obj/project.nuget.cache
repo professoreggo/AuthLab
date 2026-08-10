@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "OdLPfrbRr8c=",
+  "success": true,
+  "projectFilePath": "D:\\github\\AuthLab\\AuthLab.Api\\AuthLab.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mosta\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.17\\microsoft.aspnetcore.openapi.9.0.17.nupkg.sha512",
+    "C:\\Users\\mosta\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512",
+    "C:\\Users\\mosta\\.nuget\\packages\\swaggerui.openapi\\2.5.1\\swaggerui.openapi.2.5.1.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37203.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthLab.Api", "AuthLab.Api.csproj", "{917ACA59-9D2E-4389-83D1-DE7749A49CDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{917ACA59-9D2E-4389-83D1-DE7749A49CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{917ACA59-9D2E-4389-83D1-DE7749A49CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{917ACA59-9D2E-4389-83D1-DE7749A49CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{917ACA59-9D2E-4389-83D1-DE7749A49CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {588D63F6-A582-4ABD-A144-5B609D85F69B}
+	EndGlobalSection
+EndGlobal
