@@ -32,3 +32,4 @@ D:\github\AuthLab\AuthLab.Api\obj\Debug\net9.0\AuthLab.Api.pdb
 D:\github\AuthLab\AuthLab.Api\obj\Debug\net9.0\AuthLab.Api.genruntimeconfig.cache
 D:\github\AuthLab\AuthLab.Api\obj\Debug\net9.0\ref\AuthLab.Api.dll
 D:\github\AuthLab\AuthLab.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\github\AuthLab\AuthLab.Api\obj\Debug\net9.0\AuthLab.Api.sourcelink.json
