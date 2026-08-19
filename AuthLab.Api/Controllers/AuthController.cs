@@ -1,5 +1,6 @@
 ﻿using AuthLab.Api.Dtos;
 using AuthLab.Api.Models;
+using AuthLab.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +11,18 @@ namespace AuthLab.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+
+        // readonly means that once initiazlied you can not change; used with injected services too;
+        // it applies to the reference not the object reference
         private static readonly List<AppUser> _users = new();
         private readonly PasswordHasher<AppUser> _passwordHasher = new();
+        private readonly TokenService _tokenService;
+
+        public AuthController(TokenService tokenService)
+        {
+            _tokenService = tokenService;  // DI for token service
+        }
+
 
         [HttpPost("register")]
         public IActionResult Register(RegisterDto dto)
@@ -36,6 +47,39 @@ namespace AuthLab.Api.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(LoginDto dto)
+        {
+            var user = _users.FirstOrDefault(u => u.Email == dto.Email);
+
+            // user not exist
+            if (user == null)
+            {
+                return Unauthorized(); // 401
+            }
+
+            // password incorrect
+            var passResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+            if (passResult == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized(); // 401 too this is called user enumeration
+            }
+
+            var token = _tokenService.CreateToken(user);
+
+            return Ok(new { accessToken = token });
+
+            //return Ok(new UserResponseDto
+            //{
+            //    Id = user.Id,
+            //    Name = user.Name,
+            //    Email = user.Email,
+            //});
+
+
+
 
 
         }
