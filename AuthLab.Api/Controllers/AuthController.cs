@@ -71,17 +71,17 @@ namespace AuthLab.Api.Controllers
 
             return Ok(new { accessToken = token });
 
-            //return Ok(new UserResponseDto
-            //{
-            //    Id = user.Id,
-            //    Name = user.Name,
-            //    Email = user.Email,
-            //});
 
+        }
 
+        [HttpPost("make-admin/{id}")]
+        public IActionResult MakeAdmin(int id)
+        {
+            var user = _users.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
 
-
-
+            user.Role = "Admin";
+            return Ok(new { user.Id, user.Name, user.Role });
         }
     }
 }

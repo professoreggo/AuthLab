@@ -22,7 +22,7 @@ namespace AuthLab.Api.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim("role", user.Role)
             };
 
             // get the key (symmetric)

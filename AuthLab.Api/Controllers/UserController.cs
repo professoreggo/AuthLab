@@ -1,5 +1,6 @@
 ﻿using AuthLab.Api.Dtos;
 using AuthLab.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace AuthLab.Api.Controllers
             new AppUser { Id = 3, Name = "Charlie", Email = "charlie@example.com" }
         };
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -52,6 +54,7 @@ namespace AuthLab.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = newUser.Id }, newUser);
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
