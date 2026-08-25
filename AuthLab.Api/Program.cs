@@ -1,5 +1,7 @@
+using AuthLab.Api.Data;
 using AuthLab.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -39,6 +41,8 @@ builder.Services.AddSingleton<TokenService>();
     });
 
     builder.Services.AddAuthorization();
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 var app = builder.Build();
