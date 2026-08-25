@@ -1,8 +1,12 @@
-﻿using AuthLab.Api.Dtos;
+﻿using AuthLab.Api.Data;
+using AuthLab.Api.Dtos;
 using AuthLab.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace AuthLab.Api.Controllers
 {
@@ -10,45 +14,50 @@ namespace AuthLab.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private static readonly List<AppUser> _users = new()
+        private readonly AppDbContext _context;
+        private readonly PasswordHasher<AppUser> _passwordHasher = new();
+
+
+        public UsersController(AppDbContext context)
         {
-            new AppUser { Id = 1, Name = "Alice", Email = "alice@example.com" },
-            new AppUser { Id = 2, Name = "Bob", Email = "bob@example.com" },
-            new AppUser { Id = 3, Name = "Charlie", Email = "charlie@example.com" }
-        };
+            _context = context;
+        }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_users);
+            var result =  await _context.Users.ToListAsync();
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var user = _users.FirstOrDefault(u => u.Id == id);
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync( u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
-
             return Ok(user);
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
-        public IActionResult Create(UserDto userDto)
+        public async Task<IActionResult> Create(UserDto dto)
         {
             var newUser = new AppUser
             {
-                Id = _users.Max(u => u.Id) + 1,
-                Name = userDto.Name,
-                Email = userDto.Email
-
+                Name = dto.Name,
+                Email = dto.Email,
+                Role = "User"
             };
+            newUser.PasswordHash = _passwordHasher.HashPassword(newUser, dto.Password);
 
-            _users.Add(newUser);
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
 
             //returns the resource url using the GetById method that is where to find the resource 
             return CreatedAtAction(nameof(GetById), new { id = newUser.Id }, newUser);
@@ -56,22 +65,24 @@ namespace AuthLab.Api.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
                 return NotFound();
             }
-            _users.Remove(user);
+            _context.Users.Remove(user); //remove is not async we call SaveChangesAsync() to actully delete it 
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, AppUser updatedUser)
+        public async Task<IActionResult> Update(int id, AppUser updatedUser)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
@@ -80,6 +91,8 @@ namespace AuthLab.Api.Controllers
 
             user.Name = updatedUser.Name;
             user.Email = updatedUser.Email;
+
+            await _context.SaveChangesAsync();
 
             return Ok(user);
         }
