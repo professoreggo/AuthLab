@@ -1,0 +1,10 @@
+<h2>Register</h2>
+<form (ngSubmit)="onSubmit()">
+
+    <input [(ngModel)]="dto.name" name="name" placeholder="name"/>
+    <input [(ngModel)]="dto.email" name="email" placeholder="Email" />
+    <input [(ngModel)]="dto.password" name="password" type="password" placeholder="Password" />
+    <button type="submit">Register</button>
+
+</form>
+<p>{{message}}</p>
