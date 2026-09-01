@@ -27,7 +27,10 @@ namespace AuthLab.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result =  await _context.Users.ToListAsync();
+            var result = await _context.Users
+                .Select(u => new UserResponseDto { Id = u.Id, Email = u.Email, Name = u.Name })
+                .ToListAsync();
+
             return Ok(result);
         }
 
@@ -79,25 +82,28 @@ namespace AuthLab.Api.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, AppUser updatedUser)
+        public async Task<IActionResult> Update(int id, UserDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
             if (user == null)
-            {
                 return NotFound();
+
+            var callerId = User.FindFirst("sub")?.Value;
+            var callerRole = User.FindFirst("role")?.Value;
+
+            if (callerRole != "Admin" && callerId != id.ToString())
+            {
+                return Forbid(); // 403
             }
 
-            user.Name = updatedUser.Name;
-            user.Email = updatedUser.Email;
-
+            user.Name = dto.Name;
+            user.Email = dto.Email;
             await _context.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(new UserResponseDto { Id = user.Id, Name = user.Name, Email = user.Email });
         }
-
-
 
     }
 }
