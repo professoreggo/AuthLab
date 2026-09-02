@@ -24,7 +24,7 @@ export class LoginComponent {
     this.authService.login(this.dto).subscribe({
       next:(response)=>{
         this.authService.saveToken(response.accessToken);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/users']);
       },
       error:(err)=>{
         this.errorMessage = err.status ===401
