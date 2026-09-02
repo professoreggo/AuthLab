@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { LoginDto } from '../../dtos/loginDto';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,RouterLink, RouterOutlet],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
