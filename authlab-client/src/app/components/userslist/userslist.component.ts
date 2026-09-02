@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UserResponseDto } from '../../dtos/UserResponseDto';
 import { UsersService } from '../../services/users.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userslist',
@@ -14,7 +16,11 @@ export class UserslistComponent implements OnInit {
 
   users: UserResponseDto[] =[];
 
-  constructor(private usersService: UsersService){}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+    private router:Router
+    ){}
 
   ngOnInit(): void {
     this.getUsers();
@@ -29,6 +35,10 @@ export class UserslistComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   
