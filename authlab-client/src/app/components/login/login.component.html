@@ -1,0 +1,9 @@
+<h2>Login</h2>
+<form (ngSubmit)="onSubmit()">
+    <input [(ngModel)] = "dto.email" name="email" placeholder="Email"/>
+    <input [(ngModel)] = "dto.password" name="password" type="password" placeholder="Password"/>
+    <button type="submit">Login</button>
+
+</form>
+
+<p style="color: red">{{ errorMessage }}</p>
